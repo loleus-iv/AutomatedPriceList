@@ -1,32 +1,62 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Simple Map</title>
+  <head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-    <meta charset="utf-8">
-    <style>
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-      #map {
-        height: 100px;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="map"></div>
-    <script>
-      var map;
-      function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -34.397, lng: 150.644},
-          zoom: 8
+    <meta charset="utf-8">
+    <title>Control positioning</title>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 12,
+          center: {lat: 50.041841 , lng: 19.9801277 },
+          
+        });
+
+        var triangleCoords = [
+          {lat: 25.774, lng: -80.19},
+          {lat: 18.466, lng: -66.118},
+          {lat: 32.321, lng: -64.757}
+        ];
+
+        var bermudaTriangle = new google.maps.Polygon({paths: triangleCoords});
+
+        google.maps.event.addListener(map, 'click', function(e) {
+          var resultColor =
+              google.maps.geometry.poly.containsLocation(e.latLng, bermudaTriangle) ?
+              'red' :
+              'green';
+
+          new google.maps.Marker({
+            position: e.latLng,
+            map: map,
+            icon: {
+              path: google.maps.SymbolPath.CIRCLE,
+              fillColor: resultColor,
+              fillOpacity: .2,
+              strokeColor: 'white',
+              strokeWeight: .5,
+              scale: 10
+            }
+          });
         });
-      }
-    </script>
-<!--    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBdrEsPx6zT2UZ7QQ9CgnMws4MZknglAG0&callback=initMap">
-    </script> //-->
-  </body>
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?callback=initMap">
+    </script>
+  </body>
 </html>
