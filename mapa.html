@@ -28,35 +28,21 @@
           zoom: 12,
           center: {lat: 50.041841 , lng: 19.9801277 }
         });
-
-        var triangleCoords = [
-          {lat: 25.774, lng: -80.19},
-          {lat: 18.466, lng: -66.118},
-          {lat: 32.321, lng: -64.757}
-        ];
-
-        var bermudaTriangle = new google.maps.Polygon({paths: triangleCoords});
-
-        google.maps.event.addListener(map, 'click', function(event) {
-          //call function to create marker
-          $("#coords").append(event.latLng.lat() + ", " + event.latLng.lng()+"\n");
-          //$("#coordinate").select();
-          //delete the old marker
-          if (marker) { marker.setMap(null); }
-          //creer à la nouvelle emplacement
-          marker = new google.maps.Marker({ position: event.latLng, map: map});
-        });
-     }
-    </script>
-    <script>
-      var marker = null;
-      function initialize() {  
-      //google.maps.event.addDomListener(window, 'load', initialize);
+        var drawingManager = new google.maps.drawing.DrawingManager({
+            drawingMode: google.maps.drawing.OverlayType.POLYLINE,
+            drawingControl: false,
+            drawingControlOptions: {
+              position: google.maps.ControlPosition.TOP_CENTER,
+              drawingModes: [
+                google.maps.drawing.OverlayType.POLYLINE
+              ]
+            }
+        });
+       drawingManager.setMap(map);
       }
     </script>
-    
     <script async defer
-      src="https://maps.googleapis.com/maps/api/js?callback=initMap">
+      src="https://maps.googleapis.com/maps/api/js?callback=initMap&libraries=drawing">
     </script>
   </body>
 </html>
