@@ -3,6 +3,8 @@
   <head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
+    <!-- Loading jQuery -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
     <title>Control positioning</title>
     <style>
       html, body {
@@ -14,16 +16,17 @@
         height: 100%;
         width: 100%;
       }
+      #coords {position:absolute; font-size:8px; z-index:888;top:50px;left:0;opacity:0.8; width:100px; text-align:center;border:1px #ccc solid;}
     </style>
   </head>
   <body>
+    <div id="coords">dane:</div>
     <div id="map"></div>
     <script>
       function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 12,
-          center: {lat: 50.041841 , lng: 19.9801277 },
-          
+          center: {lat: 50.041841 , lng: 19.9801277 }
         });
 
         var triangleCoords = [
@@ -34,29 +37,26 @@
 
         var bermudaTriangle = new google.maps.Polygon({paths: triangleCoords});
 
-        google.maps.event.addListener(map, 'click', function(e) {
-          var resultColor =
-              google.maps.geometry.poly.containsLocation(e.latLng, bermudaTriangle) ?
-              'red' :
-              'green';
-
-          new google.maps.Marker({
-            position: e.latLng,
-            map: map,
-            icon: {
-              path: google.maps.SymbolPath.CIRCLE,
-              fillColor: resultColor,
-              fillOpacity: .2,
-              strokeColor: 'white',
-              strokeWeight: .5,
-              scale: 10
-            }
-          });
-        });
+        google.maps.event.addListener(map, 'click', function(event) {
+          //call function to create marker
+          $("#coords").append(event.latLng.lat() + ", " + event.latLng.lng()+"\n");
+          //$("#coordinate").select();
+          //delete the old marker
+          if (marker) { marker.setMap(null); }
+          //creer à la nouvelle emplacement
+          marker = new google.maps.Marker({ position: event.latLng, map: map});
+        });
+     }
+    </script>
+    <script>
+      var marker = null;
+      function initialize() {  
+      //google.maps.event.addDomListener(window, 'load', initialize);
       }
     </script>
+    
     <script async defer
-    src="https://maps.googleapis.com/maps/api/js?callback=initMap">
+      src="https://maps.googleapis.com/maps/api/js?callback=initMap">
     </script>
   </body>
 </html>
