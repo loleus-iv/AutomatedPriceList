@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <!-- Loading jQuery -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+    <title>Control positioning</title>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+        width: 100%;
+      }
+      #coords {position:absolute; font-size:8px; z-index:888;top:50px;left:0;opacity:0.8; width:100px; text-align:center;border:1px #ccc solid;}
+    </style>
+  </head>
+  <body>
+    <div id="coords">dane:</div>
+    <div id="map"></div>
+    <script>
+      function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 12,
+          center: {lat: 50.041841 , lng: 19.9801277 }
+        });
+        var drawingManager = new google.maps.drawing.DrawingManager({
+            drawingMode: google.maps.drawing.OverlayType.POLYLINE,
+            drawingControl: false,
+            drawingControlOptions: {
+              position: google.maps.ControlPosition.TOP_CENTER,
+              drawingModes: [
+                google.maps.drawing.OverlayType.POLYLINE
+              ]
+            }
+        });
+       drawingManager.setMap(map);
+      }
+    </script>
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?callback=initMap&libraries=drawing">
+    </script>
+  </body>
+</html>
