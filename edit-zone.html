@@ -16,31 +16,63 @@
         height: 100%;
         width: 100%;
       }
-      #coords {position:absolute; font-size:8px; z-index:888;top:50px;left:0;opacity:0.8; width:100px; text-align:center;border:1px #ccc solid;}
+      #coords {position:absolute; font-size:8px; z-index:888;top:80px;left:0;opacity:0.75; width:200px; text-align:left;border:1px blue solid;background:white;}
+      button{position:absolute; left:0px; top:50px; z-index:888; background:red;}
     </style>
   </head>
   <body>
+    <button id="show_cords" type="button">pokaż</button>
     <div id="coords">dane:</div>
     <div id="map"></div>
     <script>
+   
+      var poly;
+      var map;
+
+      $( "#show_cords" ).click(function() {
+        $("#coords").text(poly.getPath().getArray() );
+      });
       function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 12,
           center: {lat: 50.041841 , lng: 19.9801277 }
         });
-        var drawingManager = new google.maps.drawing.DrawingManager({
-            drawingMode: google.maps.drawing.OverlayType.POLYLINE,
-            drawingControl: false,
-            drawingControlOptions: {
-              position: google.maps.ControlPosition.TOP_CENTER,
-              drawingModes: [
-                google.maps.drawing.OverlayType.POLYLINE
-              ]
-            }
-        });
-       drawingManager.setMap(map);
-      }
-    </script>
+
+      // This example creates an interactive map which constructs a polyline based on
+      // user clicks. Note that the polyline only appears once its path property
+      // contains two LatLng coordinates.
+
+        poly = new google.maps.Polyline({
+          strokeColor: '#000000',
+          strokeOpacity: 1.0,
+          strokeWeight: 3,
+    			editable: true
+        });
+        poly.setMap(map);
+
+        // Add a listener for the click event
+        map.addListener('click', addLatLng);
+      }
+
+      // Handles click events on a map, and adds a new point to the Polyline.
+      function addLatLng(event) {
+        var path = poly.getPath();
+			  var sciezka = poly.getPath().getArray();
+
+        // Because path is an MVCArray, we can simply append a new coordinate
+        // and it will automatically appear.
+        path.push(event.latLng);
+        
+        // Add a new marker at the new plotted point on the polyline.
+        //Lolo: we do not need it at this moment
+        /* var marker = new google.maps.Marker({
+          position: event.latLng,
+          title: '#' + path.getLength(),
+          map: map
+        });*/
+      }
+    </script>
+
     <script async defer
       src="https://maps.googleapis.com/maps/api/js?callback=initMap&libraries=drawing">
     </script>
