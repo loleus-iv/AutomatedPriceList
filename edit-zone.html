@@ -28,7 +28,7 @@
    
       var poly;
       var map;
-
+      
       $( "#show_cords" ).click(function() {
         $("#coords").text(poly.getPath().getArray() );
       });
@@ -38,6 +38,26 @@
           center: {lat: 50.041841 , lng: 19.9801277 }
         });
 
+			var image = {
+			  url: 'images/mapa_stref_small.jpg',
+//			  size: new google.maps.Size(700, 441),
+			  origin: new google.maps.Point(0, 0),
+//			  anchor: new google.maps.Point(0, 32),
+			  scaledSize: new google.maps.Size(1238, 780)
+			};
+			var shape = {
+    			coords: [1, 1, 1, 2, 2, 2, 2, 1],
+    			type: 'poly'
+  			};
+			var marker = new google.maps.Marker({
+			    position: {lat: 49.963841 , lng: 20.0031277 } , 
+			    map: map,
+			    icon: image,
+			    shape: shape,
+			    opacity: 0.5
+			    //store_id: mkrID,
+			    //optimized: false
+			});     
       // This example creates an interactive map which constructs a polyline based on
       // user clicks. Note that the polyline only appears once its path property
       // contains two LatLng coordinates.
@@ -46,7 +66,7 @@
           strokeColor: '#000000',
           strokeOpacity: 1.0,
           strokeWeight: 3,
-    			editable: true
+    		  editable: true
         });
         poly.setMap(map);
 
@@ -56,20 +76,13 @@
 
       // Handles click events on a map, and adds a new point to the Polyline.
       function addLatLng(event) {
-        var path = poly.getPath();
+        var path = poly.getPath();
 			  var sciezka = poly.getPath().getArray();
 
         // Because path is an MVCArray, we can simply append a new coordinate
         // and it will automatically appear.
         path.push(event.latLng);
         
-        // Add a new marker at the new plotted point on the polyline.
-        //Lolo: we do not need it at this moment
-        /* var marker = new google.maps.Marker({
-          position: event.latLng,
-          title: '#' + path.getLength(),
-          map: map
-        });*/
       }
     </script>
 
